@@ -72,7 +72,9 @@ class MouseTrajectoryDrawer:
     def stop_recording(self, _):
         print("\nFinalizing and processing trajectories...")
         data_list = []
+        traj_len = []
         for traj in self.trials:
+            traj_len.append(traj.shape[1])
             pos = traj[:2].T  # shape: (T, 2)
             t = traj[2]
             dt = np.mean(np.diff(t))
@@ -86,6 +88,11 @@ class MouseTrajectoryDrawer:
         all_data = np.vstack(data_list)
         df = pd.DataFrame(all_data, columns=["x", "y", "vx", "vy"])
         df.to_csv("mouse_trajectories.csv", index=False)
+
+        traj_len = np.vstack(traj_len)
+        df1 = pd.DataFrame(traj_len, columns=["data"])
+        df1.to_csv("trajectories_len.csv", index=False)
+
         print("Saved to mouse_trajectories.csv")
         print(df.head())
 
