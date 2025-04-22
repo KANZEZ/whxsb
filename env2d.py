@@ -86,7 +86,7 @@ def traj_opt_using_ipopt():
 
     ############### optim param ###########
     ################## IPOPT is very sensitive to the solver params, initial guess, and obstacle size, N, speed...
-    N = 200
+    N = 50
     dt = 1
     x0 = np.array([1, 1])
     xg = np.array([7, 3])
@@ -187,15 +187,15 @@ def traj_opt_using_ipopt():
     ax.add_patch(outer_border)
 
     # rectangle obstacle
-    # obstacle = patches.Rectangle((obs_corner[0], obs_corner[1]), obs_length, obs_width,
-    #                                 linewidth=1, edgecolor='black', facecolor='black')
-    # ax.add_patch(obstacle)
+    obstacle = patches.Rectangle((obs_corner[0], obs_corner[1]), obs_length, obs_width,
+                                    linewidth=1, edgecolor='black', facecolor='black')
+    ax.add_patch(obstacle)
 
     # Cross obstacle
-    horizontal = patches.Rectangle((2, 3), 4, 1, facecolor='black')
-    ax.add_patch(horizontal)
-    vertical = patches.Rectangle((3.5, 2), 1,3 , facecolor='black')
-    ax.add_patch(vertical)
+    # horizontal = patches.Rectangle((2, 3), 4, 1, facecolor='black')
+    # ax.add_patch(horizontal)
+    # vertical = patches.Rectangle((3.5, 2), 1,3 , facecolor='black')
+    # ax.add_patch(vertical)
     
     plt.gca().set_aspect('equal', adjustable='box')
     plt.title("Trajectory Optimization with Dynamics, SDF, and speed Limit")
