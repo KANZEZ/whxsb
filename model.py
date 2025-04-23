@@ -25,7 +25,7 @@ def single_LPV(x, goal_x, model):
     # goal_x: [1, 2]
     diff_phi = model(x-goal_x)
     zero_phi = model(torch.zeros_like(x))
-    norm_diff = torch.norm(x-goal_x, dim=1)
+    norm_diff = torch.norm(x-goal_x)
     V = diff_phi - zero_phi + norm_diff
     return V
 
