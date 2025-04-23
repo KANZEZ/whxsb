@@ -2,3 +2,5 @@
 __pycache__
 proj
 test.py
+mouse_trajectories.py
+traj_trajectories.py
