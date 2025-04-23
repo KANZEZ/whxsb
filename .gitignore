@@ -1,5 +1,3 @@
 .vscode
 __pycache__
 proj
-mouse_trajectories.py
-traj_trajectories.py
