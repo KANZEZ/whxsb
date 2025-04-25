@@ -1,3 +1,7 @@
+##################### CONTAIN THE MAP AND TWO TRAJECTORY OPTIMIZATION #####################
+################## NOT USEd ANYMORE ##################
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches

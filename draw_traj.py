@@ -5,6 +5,8 @@ import pandas as pd
 from scipy.signal import savgol_filter
 import time
 
+import map_gen
+
 class MouseTrajectoryDrawer:
     def __init__(self, limits=(0, 5, 0, 5)):
         self.limits = limits
@@ -25,7 +27,7 @@ class MouseTrajectoryDrawer:
 
 
         # Hall Obs
-        self.obstacle_h = patches.Rectangle((0.0, 2.2), 4.0, 1, facecolor='black')
+        self.obstacle_h = map_gen.obstacle
         self.ax.add_patch(self.obstacle_h)
 
         # state
