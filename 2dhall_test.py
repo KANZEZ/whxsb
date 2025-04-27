@@ -61,7 +61,7 @@ Lyapunov_grid = lyap_values.reshape((len(y), len(x)))
 
 
 ###### simulate the trajectory
-start_pos = np.array([1.5, 4.0])
+start_pos = np.array([2.0, 5.0])
 end_pos = np.array([1.0, 1.0])
 pos_2d = start_pos
 dt = 0.01
@@ -86,6 +86,11 @@ while np.linalg.norm(pos_2d - end_pos) > 0.005:
 pos_list = np.array(pos_list)
 vel_list = np.array(vel_list)
 time_list = np.array(time_list)
+
+
+############### record the position data to csv file ######################
+data = pd.DataFrame(pos_list, columns=['x', 'y'])
+data.to_csv("2dhall_sim_trajdata.csv", index=False)
 
 
 
@@ -122,17 +127,17 @@ plt.show()
 ######################### so we only can provide a position reference to a real robot ############
 #################### while this learned dynamics is only a guide  for dynamics evolution #################
 
-# fig1, ax1 = plt.subplots()
-# # plot trajectory position
-# ax1.plot(time_list, pos_list[:, 0], color='blue', linewidth=3, label='Trajectory x position')
-# ax1.plot(time_list, pos_list[:, 1], color='yellow', linewidth=3, label='Trajectory y position')
-# # plot trajectory velocity
-# ax1.plot(time_list, vel_list[:, 0], color='red', linewidth=3, label='Trajectory x velocity')
-# ax1.plot(time_list, vel_list[:, 1], color='black', linewidth=3, label='Trajectory y velocity')
-# ax1.set_aspect('equal')
-# ax1.set_title("Trajectory Position and Velocity")
-# ax1.set_xlabel("Time")
-# ax1.set_ylabel("Position/Velocity")
-# ax1.legend()
-# ax1.grid(True)
-# plt.show()
+fig1, ax1 = plt.subplots()
+# plot trajectory position
+ax1.plot(time_list, pos_list[:, 0], color='blue', linewidth=3, label='Trajectory x position')
+ax1.plot(time_list, pos_list[:, 1], color='yellow', linewidth=3, label='Trajectory y position')
+# plot trajectory velocity
+ax1.plot(time_list, vel_list[:, 0], color='red', linewidth=3, label='Trajectory x velocity')
+ax1.plot(time_list, vel_list[:, 1], color='black', linewidth=3, label='Trajectory y velocity')
+ax1.set_aspect('equal')
+ax1.set_title("Trajectory Position and Velocity")
+ax1.set_xlabel("Time")
+ax1.set_ylabel("Position/Velocity")
+ax1.legend()
+ax1.grid(True)
+plt.show()
