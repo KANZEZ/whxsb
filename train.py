@@ -17,7 +17,7 @@ traj_goal = np.zeros((traj_len.shape[0], 2))
 for i in range(traj_len.shape[0]):
     traj_goal[i, :] = trajectory[traj_sum_len[i]-1, :2]
 
-
+a = 2
 
 # N = 1000
 # x = torch.randn(N, 2)

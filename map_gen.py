@@ -29,7 +29,21 @@ def get_hall_map():
 
     return x_range, y_range, obstacle_mask, obstacle
 
+def get_cross_map():
+    """
+    Create a hall map with a rectangular obstacle.
+    """
+    x_range = np.arange(limits[0], limits[1] + grid_res, grid_res)
+    y_range = np.arange(limits[2], limits[3] + grid_res, grid_res)
+    X, Y = np.meshgrid(x_range, y_range)
+    
+    obstacle_mask = np.zeros_like(X, dtype=bool)
+    obstacle_mask[(Y >= lfy) & (Y <= lfy + width) &
+                  (X >= lfx) & (X <= lfx + length)] = True
+    
+    obstacle = patches.Rectangle((lfx, lfy), length, width, facecolor='black')
 
+    return x_range, y_range, obstacle_mask, obstacle
 
 def get_hall_sdf_info(obstacle_mask, x_range, y_range):
     """
