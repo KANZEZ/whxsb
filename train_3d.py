@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
-from model import LPV_NN, loss_fn, LPV_NN_3D, loss_fn_3D
+from model import LPV_NN, loss_fn, LPV_NN_3D, loss_fn_3D, loss_fn_3D_vec
 from read import DataReader
 # from data import input_data, target_data
 
@@ -24,14 +24,23 @@ for i in range(traj_len.shape[0]):
 
 model = LPV_NN_3D(input_dim=3, output_dim=1)
 model.to(device)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-nepochs = 100
+optimizer = torch.optim.Adam(model.parameters(), lr=0.0005)
+nepochs = 150
 plot_cnt = 0
 plot_loss = []
-
+loop_cnt = 0
 losses = []
 
 for epoch in range(nepochs):
+
+    ## change the lr when epoch > 70
+    if epoch > 70 and epoch <120:
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = 0.0001
+    if epoch >= 120:
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = 0.00005
+
     model.train()
     points_cnt = 0
     idx = 0
@@ -50,7 +59,7 @@ for epoch in range(nepochs):
                 xg = xg.to(device)
                 points_cnt += batch_size
                 optimizer.zero_grad()
-                loss = loss_fn_3D(x, xg, x_dot, model, epsilon=0.1, lambda1=1.0, lambda2=1.0)
+                loss = loss_fn_3D_vec(x, xg, x_dot, model, epsilon=0.1, lambda1=1.0, lambda2=1.0)
                 loss.backward()
                 optimizer.step()
                 losses.append(loss.item())
@@ -67,7 +76,7 @@ for epoch in range(nepochs):
                 xg = xg.to(device)
                 points_cnt += traj_sum_len[idx] - points_cnt
                 optimizer.zero_grad()
-                loss = loss_fn_3D(x, xg, x_dot, model, epsilon=0.1, lambda1=1.0, lambda2=1.0)
+                loss = loss_fn_3D_vec(x, xg, x_dot, model, epsilon=0.1, lambda1=1.0, lambda2=1.0)
                 loss.backward()
                 optimizer.step()
                 losses.append(loss.item())
@@ -76,6 +85,9 @@ for epoch in range(nepochs):
         else:
             idx += 1
             # points_cnt += 1
+        loop_cnt += 1
+    loop_cnt = 0
+
 
     
     

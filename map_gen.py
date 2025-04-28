@@ -29,8 +29,6 @@ def get_hall_map():
 
     return x_range, y_range, obstacle_mask, obstacle
 
-
-
 def get_hall_sdf_info(obstacle_mask, x_range, y_range):
     """
     Get the signed distance function (SDF) of the hall map.
@@ -48,6 +46,10 @@ def get_hall_sdf_info(obstacle_mask, x_range, y_range):
     interp_dy = RegularGridInterpolator((y_range, x_range), dy, method='linear', bounds_error=False, fill_value=np.nan)
 
     return sdf, interp_fn, interp_dx, interp_dy
+
+
+
+##########################################################################################
 
 
 x_range, y_range, obstacle_mask, obstacle = get_hall_map()
