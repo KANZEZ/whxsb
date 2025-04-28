@@ -20,15 +20,15 @@ class MouseTrajectoryDrawer:
         self.ax.grid(True)
 
         # Cross Obs
-        # self.obstacle_h = patches.Rectangle((1.0, 2.2), 3.0, 0.6, facecolor='black')
-        # self.obstacle_v = patches.Rectangle((2.2, 1.0), 0.6, 3.0, facecolor='black')
-        # self.ax.add_patch(self.obstacle_h)
-        # self.ax.add_patch(self.obstacle_v)
-
-
-        # Hall Obs
-        self.obstacle_h = map_gen.obstacle
+        self.obstacle_h = map_gen.obstacle_cross[0]
+        self.obstacle_v = map_gen.obstacle_cross[1]
         self.ax.add_patch(self.obstacle_h)
+        self.ax.add_patch(self.obstacle_v)
+
+
+        # # Hall Obs
+        # self.obstacle_h = map_gen.obstacle_hall
+        # self.ax.add_patch(self.obstacle_h)
 
         # state
         self.drawing = False

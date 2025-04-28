@@ -17,8 +17,6 @@ traj_goal = np.zeros((traj_len.shape[0], 2))
 for i in range(traj_len.shape[0]):
     traj_goal[i, :] = trajectory[traj_sum_len[i]-1, :2]
 
-a = 2
-
 # N = 1000
 # x = torch.randn(N, 2)
 # x_next = x + 0.1 * torch.randn(N, 2)
@@ -86,7 +84,7 @@ for epoch in range(nepochs):
     if epoch % 2 == 0:
         print(f'Epoch {epoch}, Loss: {total_epoch_loss / epoch_cnt}')
         
-torch.save(model.state_dict(), 'model_weights.pth')
+torch.save(model.state_dict(), 'model_weights_cross.pth')
 
 # plot losses
 plt.plot(range(plot_cnt), plot_loss, label='loss', color='blue')
