@@ -19,14 +19,14 @@ class MouseTrajectoryDrawer:
         self.ax.set_ylabel("y")
         self.ax.grid(True)
 
-        # Cross Obs
+        # ============================ cross obstacle ===================================
         self.obstacle_h = map_gen.obstacle_cross[0]
         self.obstacle_v = map_gen.obstacle_cross[1]
         self.ax.add_patch(self.obstacle_h)
         self.ax.add_patch(self.obstacle_v)
 
 
-        # # Hall Obs
+        # ============================ hall obstacle ===================================
         # self.obstacle_h = map_gen.obstacle_hall
         # self.ax.add_patch(self.obstacle_h)
 

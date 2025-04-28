@@ -4,8 +4,7 @@ import map_gen
 
 ################### produce M(x) matrix for every point in the grid
 def get_M(x, y):
-    # ===============================================================
-    # hall obstacle
+    # ============================ hall obstacle ===================================
     # yx = [y,x]
     # sdf_values = map_gen.interp_fn_hall(yx)[0]
     # lambdan = 1 - 1 / (1 + sdf_values)
@@ -25,8 +24,7 @@ def get_M(x, y):
 
     # M = E @ D @ np.linalg.inv(E)
 
-    # ===============================================================
-    # cross obstacle
+    # ============================ cross obstacle ===================================
     yx = [y,x]
     sdf_values = map_gen.interp_fn_cross(yx)[0]
     lambdan = 1 - 1 / (1 + sdf_values)

@@ -72,5 +72,6 @@ def get_hall_sdf_info(obstacle_mask, x_range, y_range):
 
 x_range_hall, y_range_hall, obstacle_mask_hall, obstacle_hall = get_hall_map()
 x_range_cross, y_range_cross, obstacle_mask_cross, obstacle_cross = get_cross_map()
+
 sdf_hall, interp_fn_hall, interp_dx_hall, interp_dy_hall = get_hall_sdf_info(obstacle_mask_hall, x_range_hall, y_range_hall)
 sdf_cross, interp_fn_cross, interp_dx_cross, interp_dy_cross = get_hall_sdf_info(obstacle_mask_cross, x_range_cross, y_range_cross)
