@@ -6,10 +6,10 @@ from scipy.interpolate import RegularGridInterpolator
 
 ############## 2D hall map configuration ###################
 limits=(0, 5, 0, 5)
-lfx=0.0
-lfy=2.2
-width=1.0
-length=4.0
+lfx=2 # 0.0
+lfy=2 # 2.2
+width=1.0 # 1.0
+length=1.0 # 4.0
 grid_res=0.01
 
 

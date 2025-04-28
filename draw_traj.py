@@ -89,11 +89,11 @@ class MouseTrajectoryDrawer:
         # 输出到 CSV
         all_data = np.vstack(data_list)
         df = pd.DataFrame(all_data, columns=["x", "y", "vx", "vy"])
-        df.to_csv("mouse_trajectories.csv", index=False)
+        df.to_csv("square_trajectories.csv", index=False)
 
         traj_len = np.vstack(traj_len)
         df1 = pd.DataFrame(traj_len, columns=["data"])
-        df1.to_csv("trajectories_len.csv", index=False)
+        df1.to_csv("square_trajectories_len.csv", index=False)
 
         print("Saved to mouse_trajectories.csv")
         print(df.head())

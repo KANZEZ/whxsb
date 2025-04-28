@@ -7,9 +7,9 @@ from pybullet_planning import plan_joint_motion, get_movable_joints, get_joint_p
 
 ############ load the model ##################
 physicsClient = p.connect(p.GUI)
-p.setAdditionalSearchPath("/home/hsh/Code/whxsb/urdf/")
-table = p.loadURDF("table1.urdf", basePosition = [1, 0, 0])
-block = p.loadURDF("block1.urdf", basePosition = [0.5, 0.0, 0.36])
+# p.setAdditionalSearchPath("/home/young/MEAM6230/Final/whxsb/urdf")
+table = p.loadURDF("urdf/table1.urdf", basePosition = [1, 0, 0])
+block = p.loadURDF("urdf/block1.urdf", basePosition = [0.5, 0.0, 0.36])
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
 p.setGravity(0, 0, -9.8)
 # load ground plane and obstacles
