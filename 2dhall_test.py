@@ -103,7 +103,7 @@ plt.colorbar(contour, ax=ax, label="Lyapunov Value")
 # policy before modulation
 # ax.quiver(X, Y, U, V, speed, cmap='Reds', scale=20, scale_units='xy') ### ORIGINAL POLICY
 # policy after modulation
-ax.quiver(X, Y, MU, MV, speed, cmap='Reds', scale=20, scale_units='xy') ### MODIFIED POLICY
+# ax.quiver(X, Y, MU, MV, speed, cmap='Reds', scale=20, scale_units='xy') ### MODIFIED POLICY
 
 ############ plot the simulated trajectory
 ax.plot(pos_list[:, 0], pos_list[:, 1], color='blue', linewidth=3, label='Simulated Trajectory')
@@ -116,8 +116,10 @@ ax.set_xlabel("x")
 ax.set_ylabel("y")
 ax.grid(True)
 
-obstacle_h = patches.Rectangle((0.0, 2.2), 4.0, 1, facecolor='black')
+obstacle_h = map_gen.obstacle_cross[0]
+obstacle_v = map_gen.obstacle_cross[1]
 ax.add_patch(obstacle_h)
+ax.add_patch(obstacle_v)
 plt.show()
 
 
