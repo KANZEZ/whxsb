@@ -65,6 +65,7 @@ draw_data = false;
 
 % === 1. 读取主数据：x, y, vx, vy ===
 raw_data = readmatrix('data/2d-HALL/mouse_trajectories.csv');  % shape: N × 4
+% raw_data = readmatrix('mouse_trajectories.csv');  % shape: N × 4
 x = raw_data(:,1);
 y = raw_data(:,2);
 vx = raw_data(:,3);
@@ -72,7 +73,7 @@ vy = raw_data(:,4);
 
 % === 2. 读取每段轨迹的长度 ===
 traj_lengths = readmatrix('data/2d-HALL/trajectories_len.csv');  % e.g., [274; 224; 159; ...]
-
+% traj_lengths = readmatrix('trajectories_len.csv');  % e.g., [274; 224; 159; ...]
 % === 3. 分割轨迹并构造 Data 和 Data_sh ===
 M = 2;  % 每个样本维度（位置是2维）
 Data = []; Data_sh = []; x0_all = []; x0_end = [];
@@ -450,3 +451,45 @@ xlim([0, 5]); ylim([0, 5]);
 % 
 % legend('Lyapunov V(x)', 'Obstacle', 'Trajectory', 'Velocity');
 % xlim([0, 5]); ylim([0, 5]);
+
+%% Step 9: Plot Dynamics Field with Single Trajectory
+figure; hold on; axis equal; grid on;
+title('SEDS Dynamics Field with Single Trajectory');
+xlabel('$x_1$', 'Interpreter', 'latex', 'FontSize', 16);
+ylabel('$x_2$', 'Interpreter', 'latex', 'FontSize', 16);
+
+% === 设置坐标轴范围 ===
+custom_limits = [-20, 20, -20, 20];  % 你可以在这里自定义
+xlim(custom_limits(1:2)); ylim(custom_limits(3:4));
+
+% === 1. 绘制黑色流线场 ===
+[h_field, ~] = plot_ds_model(gcf, ds_seds, [0; 0], custom_limits, 'medium');  % 200×200 分辨率
+
+% === 2. 计算并绘制轨迹（step7 同样方式） ===
+start_pos = [2.0; 5.0];
+end_pos = [1.0; 1.0];
+dt = 0.01;
+cur_pos = start_pos;
+cur_time = 0;
+traj_pos = [];
+traj_vel = [];
+traj_time = [];
+max_steps = 5e3;
+step = 0;
+
+while norm(cur_pos - end_pos) > 0.005 && step <= max_steps
+    v = ds_seds(cur_pos);
+    traj_pos(:, end+1) = cur_pos;
+    traj_vel(:, end+1) = v;
+    traj_time(end+1) = cur_time;
+    cur_pos = cur_pos + dt * v;
+    cur_time = cur_time + dt;
+    step = step + 1;
+end
+
+% === 3. 画蓝色轨迹线 + 黑色箭头表示速度方向 ===
+plot(traj_pos(1,:), traj_pos(2,:), 'b-', 'LineWidth', 2);  % 蓝色轨迹线
+% quiver(traj_pos(1,:), traj_pos(2,:), traj_vel(1,:), traj_vel(2,:), ...
+%        0.5, 'k', 'LineWidth', 1);  % 黑色箭头表示速度
+
+legend({'Vector Field', 'Trajectory', 'Velocity'}, 'Location', 'best');
