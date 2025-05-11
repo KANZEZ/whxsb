@@ -196,7 +196,7 @@ tEnd = cputime - tStart;
 % Fill in plotting options
 ds_plot_options = [];
 ds_plot_options.sim_traj  = 1;            % To simulate trajectories from x0_all
-ds_plot_options.x0_all    = x0_all;       % Intial Points
+ds_plot_options.x0_all    = x0_all(:,1:5);       % Intial Points
 ds_plot_options.init_type = 'ellipsoid';  % For 3D DS, to initialize streamlines
                                           % 'ellipsoid' or 'cube'
 ds_plot_options.nb_points = 30;           % No of streamlines to plot (3D)
@@ -298,7 +298,7 @@ output = [grid_points', vel', V_vals'];
 writematrix(output, 'seds_grid_field.csv');
 
 %% ===== Step 7: Simulate One Trajectory from Start to End and Export =====
-start_pos = [2.0; 5.0];
+start_pos = [2.0; 4.0];
 end_pos = [1.0; 1.0];
 dt = 0.01;
 cur_time = 0;
@@ -354,6 +354,7 @@ clim([0, max(V_plot(:))]);
 
 % ---- 2. Plot obstacle ----
 rectangle('Position', [0.0, 2.2, 4.0, 1.0], 'FaceColor', 'k');
+rectangle('Position', [0.0, 1, 4.0, 0.5], 'FaceColor', 'k');
 
 % ---- 3. Plot trajectory ----
 plot(traj_pos(1,:), traj_pos(2,:), 'b-', 'LineWidth', 2);
@@ -363,95 +364,6 @@ quiver(traj_pos(1,:), traj_pos(2,:), traj_vel(1,:), traj_vel(2,:), ...
 legend('Lyapunov V(x)', 'Obstacle', 'Trajectory', 'Velocity');
 xlim([0, 5]); ylim([0, 5]);
 
-%  ======================================================================================
-% %% ===== Step 6: Export SEDS Grid Field and Simulated Trajectory =====
-% 
-% % === Set same limits and resolution as Python (40 x 40 grid) ===
-% limits = [0, 5, 0, 5];  % xmin, xmax, ymin, ymax
-% num_points = 40;
-% x_vals = linspace(limits(1), limits(2), num_points);
-% y_vals = linspace(limits(3), limits(4), num_points);
-% [x_grid, y_grid] = meshgrid(x_vals, y_vals);
-% grid_points = [x_grid(:)'; y_grid(:)'];
-% 
-% % ===== 推理网格速度和 Lyapunov 值 =====
-% vel = ds_seds(grid_points);  % 2 x N
-% P = eye(2);  % Lyapunov 矩阵
-% V_vals = zeros(1, size(grid_points, 2));
-% for i = 1:size(grid_points, 2)
-%     V_vals(i) = lyapunov_function_PQLF(grid_points(:, i), att, P);
-% end
-% 
-% % ===== 保存网格速度场和 Lyapunov 等高线值 =====
-% output = [grid_points', vel', V_vals'];
-% writematrix(output, 'seds_grid_field.csv');  % 输出顺序为 x, y, dx, dy, V(x)
-% disp("grid_points: " + size(grid_points, 2))
-% disp("vel: " + size(vel, 2))
-% disp("V_vals: " + length(V_vals))
-% %% ===== Step 7: Simulate One Trajectory from Start to End and Export =====
-% start_pos = [2.0; 5.0];
-% end_pos = [1.0; 1.0];
-% dt = 0.01;
-% cur_time = 0;
-% cur_pos = start_pos;
-% traj_pos = [];
-% traj_vel = [];
-% traj_time = [];
-% 
-% max_steps = 5e3;
-% step = 0;
-% while norm(cur_pos - end_pos) > 0.005 && step <= max_steps
-%     v = ds_seds(cur_pos);
-%     traj_pos(:, end+1) = cur_pos;
-%     traj_vel(:, end+1) = v;
-%     traj_time(end+1) = cur_time;
-%     cur_pos = cur_pos + dt * v;
-%     cur_time = cur_time + dt;
-%     step = step + 1;
-% end
-% 
-% % ===== 导出单条轨迹位置、速度、时间 =====
-% single_traj = [traj_pos', traj_vel', traj_time'];
-% writematrix(single_traj, 'seds_single_traj.csv');  % x, y, dx, dy, t
-% 
-% % ===== 导出该轨迹上每一点的 Lyapunov 值 =====
-% traj_V = zeros(1, size(traj_pos, 2));
-% for i = 1:size(traj_pos, 2)
-%     traj_V(i) = lyapunov_function_PQLF(traj_pos(:, i), att, P);
-% end
-% writematrix(traj_V', 'seds_single_traj_V.csv');
-% 
-% %% ===== Step 8: Visualize the Single Trajectory =====
-% figure; hold on; axis equal; grid on;
-% title('Simulated Single Trajectory under SEDS');
-% xlabel('x'); ylabel('y');
-% 
-% % ---- 1. Plot Lyapunov contour ----
-% x_vals = linspace(0, 5, 40);  % 保持一致
-% y_vals = linspace(0, 5, 40);
-% [x_grid, y_grid] = meshgrid(x_vals, y_vals);
-% V_plot = zeros(size(x_grid));
-% for i = 1:numel(x_grid)
-%     x_point = [x_grid(i); y_grid(i)];
-%     V_plot(i) = lyapunov_function_PQLF(x_point, att, P);
-% end
-% 
-% contourf(x_grid, y_grid, V_plot, 50, 'LineColor', 'none');
-% colormap('parula');
-% colorbar;
-% clim([0, max(V_plot(:))]);
-% 
-% % ---- 2. Plot obstacle ----
-% rectangle('Position', [0.0, 2.2, 4.0, 1.0], 'FaceColor', 'k');
-% 
-% % ---- 3. Plot trajectory ----
-% plot(traj_pos(1,:), traj_pos(2,:), 'b-', 'LineWidth', 2);
-% quiver(traj_pos(1,:), traj_pos(2,:), traj_vel(1,:), traj_vel(2,:), ...
-%        0.5, 'r', 'LineWidth', 1);
-% 
-% legend('Lyapunov V(x)', 'Obstacle', 'Trajectory', 'Velocity');
-% xlim([0, 5]); ylim([0, 5]);
-
 %% Step 9: Plot Dynamics Field with Single Trajectory
 figure; hold on; axis equal; grid on;
 title('SEDS Dynamics Field with Single Trajectory');
@@ -459,14 +371,14 @@ xlabel('$x_1$', 'Interpreter', 'latex', 'FontSize', 16);
 ylabel('$x_2$', 'Interpreter', 'latex', 'FontSize', 16);
 
 % === 设置坐标轴范围 ===
-custom_limits = [-20, 20, -20, 20];  % 你可以在这里自定义
+custom_limits = [0, 5, 0, 5];  % 你可以在这里自定义
 xlim(custom_limits(1:2)); ylim(custom_limits(3:4));
 
 % === 1. 绘制黑色流线场 ===
 [h_field, ~] = plot_ds_model(gcf, ds_seds, [0; 0], custom_limits, 'medium');  % 200×200 分辨率
 
 % === 2. 计算并绘制轨迹（step7 同样方式） ===
-start_pos = [2.0; 5.0];
+start_pos = [-0.5; 3.76];
 end_pos = [1.0; 1.0];
 dt = 0.01;
 cur_pos = start_pos;
@@ -474,6 +386,7 @@ cur_time = 0;
 traj_pos = [];
 traj_vel = [];
 traj_time = [];
+Lyv = [];
 max_steps = 5e3;
 step = 0;
 
@@ -483,6 +396,7 @@ while norm(cur_pos - end_pos) > 0.005 && step <= max_steps
     traj_vel(:, end+1) = v;
     traj_time(end+1) = cur_time;
     cur_pos = cur_pos + dt * v;
+    Lyv(end+1) = lyapunov_function_PQLF(cur_pos, att, P);
     cur_time = cur_time + dt;
     step = step + 1;
 end
@@ -493,3 +407,7 @@ plot(traj_pos(1,:), traj_pos(2,:), 'b-', 'LineWidth', 2);  % 蓝色轨迹线
 %        0.5, 'k', 'LineWidth', 1);  % 黑色箭头表示速度
 
 legend({'Vector Field', 'Trajectory', 'Velocity'}, 'Location', 'best');
+
+figure;
+plot(traj_time, Lyv);
+

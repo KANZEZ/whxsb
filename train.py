@@ -77,8 +77,6 @@ for epoch in range(nepochs):
             idx += 1
             # points_cnt += 1
 
-    
-    
     plot_cnt += 1
     plot_loss.append(total_epoch_loss / epoch_cnt)
     if epoch % 2 == 0:
